@@ -5,17 +5,14 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   Controls,
-  Panel
+  Panel, getConnectedEdges
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-
 
 import Sidebar from './Sidebar';
 
 import './App.css';
-import Message from './Message';
 import TextUpdaterNode from './Message';
-import { createContext } from 'react';
 import SettingsBar from './SettingsBar';
 
 let id = 0;
@@ -39,34 +36,22 @@ const DnDFlow = () => {
   const [nodeMessage, setNodeMessage] = useState("")
   const [nodeClick, setNodeClick] = useState(false)
   const [nodeId, setNodeId] = useState(0)
+  const [errorState, setErrorState] = useState("")
+
+  //executes on saving flow
 
   const onSave = useCallback(() => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject();
+      // console.log(flow);
       localStorage.setItem(flowKey, JSON.stringify(flow));
       // console.log(JSON.parse(localStorage.getItem(flowKey)));
     }
   }, [reactFlowInstance]);
 
-  // const onRestore = useCallback(() => {
-  //   const restoreFlow = async () => {
-  //     const flow = JSON.parse(localStorage.getItem(flowKey));
-
-  //     if (flow) {
-  //       const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-  //       setNodes(flow.nodes || []);
-  //       setEdges(flow.edges || []);
-  //       setViewport({ x, y, zoom });
-  //     }
-  //   };
-
-  //   restoreFlow();
-  // }, [setNodes, setViewport]);
-
-
-
+  // console.log(nodes);
+  // console.log(edges);
   useEffect(() => {
-    // console.log(nodes);
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
@@ -99,14 +84,6 @@ const DnDFlow = () => {
     (event) => {
       event.preventDefault();
 
-      // const insideData = event.dataTransfer.getData('text');
-      // console.log(insideData);
-      // setNodeMessage(insideData)
-      // check if the dropped element is valid
-      // if (typeof type === 'undefined' || !type) {
-      //   return;
-      // }
-
       const position = reactFlowInstance.screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
@@ -116,7 +93,7 @@ const DnDFlow = () => {
         id: getId(),
         type: 'textUpdater',
         position,
-        data: { label: "shiva" },
+        data: { label: "click node to type" },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -134,9 +111,40 @@ const DnDFlow = () => {
     // Do something with the data, such as displaying it in a modal or saving it to a database.
 
   })
-  // console.log(nodeClick);
-  // console.log(nodeMessage);
-  // console.log(nodeId);
+
+  const checkAndSave = () => {
+    const connectedEdges = getConnectedEdges(nodes, edges);
+    const result = nodes.map((node) => {
+
+      const connectedEdges = getConnectedEdges([node], edges);
+      // console.log(connectedEdges);
+      console.log(node.id);
+      const edgesLength = connectedEdges.reduce((total, edge) => {
+        console.log(edge.target);
+        if (edge.target === node.id) {
+          total = total + 1
+        }
+        return total
+      }, 0)
+      console.log(edgesLength);
+      return edgesLength
+      // return connectedEdges
+    })
+    console.log(result);
+    let count = 0
+    const nofEmpty = result.map((res) => {
+      if (res === 0) {
+        count++
+      }
+    })
+    if (count > 1) {
+      // console.log("empty more than one");
+      setErrorState("empty more than one,So,cannot save the file")
+      return
+    }
+
+    onSave()
+  }
 
   return (
     <div className="dndflow">
@@ -156,13 +164,13 @@ const DnDFlow = () => {
             onNodeClick={onNodeClick}
           >
             <Controls />
+            <Panel position='top-center'>{errorState}</Panel>
             <Panel position="top-right">
 
               <div className='panel'>
 
-                <button onClick={onSave()}>save flow</button>
+                <button onClick={checkAndSave}>save flow</button>
 
-                {/* <button onClick={onRestore()}>Restore flow</button> */}
                 {nodeClick ? (
                   <SettingsBar nodeMessage={nodeMessage} setNodeMessage={setNodeMessage} setNodeClick={setNodeClick} />
                 ) : (<Sidebar />)}

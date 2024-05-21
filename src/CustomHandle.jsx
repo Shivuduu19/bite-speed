@@ -23,7 +23,7 @@ const CustomHandle = (props) => {
             // if (typeof nodeId == "object") return
             if (nodeId == undefined) return
             const node = nodeInternals.get(nodeId);
-            // console.log(node.id);
+            // console.log(node);
 
 
             const connectedEdges = getConnectedEdges([node], edges);
