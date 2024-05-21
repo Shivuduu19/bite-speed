@@ -26,7 +26,7 @@ const DnDFlow = () => {
       id: '1',
       type: 'textUpdater',
       position: { x: 250, y: 5 },
-      data: { label: "shiva" }
+      data: { label: "click node to type" }
     },
   ];
   const reactFlowWrapper = useRef(null);
@@ -43,9 +43,7 @@ const DnDFlow = () => {
   const onSave = useCallback(() => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject();
-      // console.log(flow);
       localStorage.setItem(flowKey, JSON.stringify(flow));
-      // console.log(JSON.parse(localStorage.getItem(flowKey)));
     }
   }, [reactFlowInstance]);
 
@@ -80,6 +78,7 @@ const DnDFlow = () => {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
+  // runs on dragging node to flow
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -100,6 +99,8 @@ const DnDFlow = () => {
     },
     [reactFlowInstance],
   );
+
+  //runs on clicking node
   const onNodeClick = useCallback((event, node) => {
     // if (node.data)
     event.preventDefault()
@@ -112,13 +113,13 @@ const DnDFlow = () => {
 
   })
 
+  //this checks if it has more than one node with empty target and saves if it does not find more than one
   const checkAndSave = () => {
     const connectedEdges = getConnectedEdges(nodes, edges);
     const result = nodes.map((node) => {
 
       const connectedEdges = getConnectedEdges([node], edges);
-      // console.log(connectedEdges);
-      console.log(node.id);
+      // counting any edges to the target
       const edgesLength = connectedEdges.reduce((total, edge) => {
         console.log(edge.target);
         if (edge.target === node.id) {
@@ -126,11 +127,12 @@ const DnDFlow = () => {
         }
         return total
       }, 0)
-      console.log(edgesLength);
+      // console.log(edgesLength);
       return edgesLength
       // return connectedEdges
     })
-    console.log(result);
+
+    //counting if there are more than one target with empty connections
     let count = 0
     const nofEmpty = result.map((res) => {
       if (res === 0) {
@@ -168,9 +170,8 @@ const DnDFlow = () => {
             <Panel position="top-right">
 
               <div className='panel'>
-
                 <button onClick={checkAndSave}>save flow</button>
-
+                {/* if node is clicked then panel with settings bar appears else nodes bar */}
                 {nodeClick ? (
                   <SettingsBar nodeMessage={nodeMessage} setNodeMessage={setNodeMessage} setNodeClick={setNodeClick} />
                 ) : (<Sidebar />)}
