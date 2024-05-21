@@ -9,12 +9,22 @@ body,
   font-family: sans-serif;
 }
 
-.pannel {
+.panel {
   color: red;
-  width: 100%;
+  width: 20rem;
   padding-right: 29px;
-  background-color: blueviolet;
+  text-align: center;
+  /* background-color: blueviolet; */
 }
+
+aside {
+  width: 100%;
+}
+
+.sidebar {
+  min-width: 100%;
+}
+
 
 
 input {
@@ -25,6 +35,8 @@ input {
   /* margin: 15px; */
 
 }
+
+
 
 /* .messageParent {
   width: 100%;

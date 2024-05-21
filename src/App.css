@@ -45,8 +45,15 @@
   margin-top: 10px;
 }
 
+.customNode {
+  background-color: white;
+  width: 12rem;
+  width: 100%;
+}
+
 .panelElement {
   height: auto;
+  /* width: 14rem; */
   border-radius: 15%;
   box-shadow: 10px 5px 8px 5px teal;
 }
@@ -58,9 +65,33 @@
 
 }
 
+
+
+.header {
+  text-align: center;
+}
+
 .actualMessage {
   height: 3rem;
   padding: 8px 20px;
+}
+
+.settings {
+  /* width: 100%; */
+  border: 2px solid rgb(187, 255, 0);
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.settingsHeader {
+  width: 100%;
+  text-align: center;
+  height: 50px;
+  padding-top: 20px;
+}
+
+.settingsInput {
+  outline: none;
 }
 
 @media screen and (min-width: 768px) {
