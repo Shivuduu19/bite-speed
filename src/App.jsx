@@ -66,7 +66,7 @@ const DnDFlow = () => {
 
 
   useEffect(() => {
-    console.log(nodes);
+    // console.log(nodes);
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
@@ -125,7 +125,8 @@ const DnDFlow = () => {
   );
   const onNodeClick = useCallback((event, node) => {
     // if (node.data)
-    console.log(node);
+    event.preventDefault()
+    // console.log(node);
     setNodeMessage(node.data.label)
     setNodeId(node.id)
     setNodeClick(true)
@@ -133,9 +134,9 @@ const DnDFlow = () => {
     // Do something with the data, such as displaying it in a modal or saving it to a database.
 
   })
-  console.log(nodeClick);
-  console.log(nodeMessage);
-  console.log(nodeId);
+  // console.log(nodeClick);
+  // console.log(nodeMessage);
+  // console.log(nodeId);
 
   return (
     <div className="dndflow">

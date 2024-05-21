@@ -11,14 +11,14 @@ function TextUpdaterNode({ data }) {
 
     const handleClick = () => {
         const nodeId = useNodeId()
-        console.log(nodeId);
+        // console.log(nodeId);
         const flow = useReactFlow()
-        console.log(flow.getNode(nodeId));
+        // console.log(flow.getNode(nodeId));
     }
 
     // const node = data
     // console.log(setNodeData);
-    console.log(data);
+    // console.log(data);
     const store = useStore();
     return (
         <div className='customNode' onNodeClick={() => handleClick}>
