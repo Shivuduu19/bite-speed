@@ -65,7 +65,9 @@
 
 }
 
-
+.back {
+  width: 2rem;
+}
 
 .header {
   text-align: center;

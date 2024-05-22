@@ -116,6 +116,7 @@ const DnDFlow = () => {
   //this checks if it has more than one node with empty target and saves if it does not find more than one
   const checkAndSave = () => {
     const connectedEdges = getConnectedEdges(nodes, edges);
+    setErrorState("")
     const result = nodes.map((node) => {
 
       const connectedEdges = getConnectedEdges([node], edges);
@@ -142,6 +143,9 @@ const DnDFlow = () => {
     if (count > 1) {
       // console.log("empty more than one");
       setErrorState("empty more than one,So,cannot save the file")
+      setTimeout(() => {
+        setErrorState("")
+      }, 5000);
       return
     }
 
